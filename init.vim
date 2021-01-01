@@ -60,6 +60,10 @@ noremap K 5j
 noremap W 5w
 noremap B 5b
 
+" Indentation
+nnoremap < <<
+nnoremap > >>
+
 " Search
 noremap <LEADER><CR> :nohlsearch<CR>
 
@@ -120,7 +124,7 @@ cnoremap w!! w !sudo tee % > /dev/null
 " === Markdown Settings
 " ===
 " Snippets
-source $HOME/.config/nvim/md-snippets.vim
+source ~/.config/nvim/md-snippets.vim
 " auto spell
 autocmd BufRead,BufNewFile *.md setlocal spell
 
@@ -133,12 +137,17 @@ noremap = nzz
 
 
 
+
 call plug#begin()
 
 Plug 'mhinz/vim-startify'
 
 Plug 'yggdroot/indentline'
 Plug 'jiangmiao/auto-pairs'
+
+
+" Editor 
+Plug 'lyokha/vim-xkbswitch'
 
 " color scheme
 " Plug 'dracula/vim', { 'as': 'dracula' }
@@ -152,6 +161,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 
 " File manager
 Plug 'preservim/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " Comment
 Plug 'tpope/vim-commentary'
@@ -165,7 +175,10 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Markdown
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
-Plug 'dkarter/bullets.vim'
+" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+" Plug 'dkarter/bullets.vim'
+" Plug 'iamcco/mathjax-support-for-mkdp'
+
 
 " Auto Complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -199,6 +212,10 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#branch#enabled=1
 
 
+let g:XkbSwitchEnabled = 1
+
+
+
 " ===
 " === Git Gutter
 " ===
@@ -229,6 +246,18 @@ nnoremap <C-f> :NERDTreeFind<CR>
 nnoremap ff :NERDTreeToggle<CR>
 let NERDTreeMapOpenSplit = "hs"
 
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ 'Modified'  :'✹',
+                \ 'Staged'    :'✚',
+                \ 'Untracked' :'✭',
+                \ 'Renamed'   :'➜',
+                \ 'Unmerged'  :'═',
+                \ 'Deleted'   :'✖',
+                \ 'Dirty'     :'✗',
+                \ 'Ignored'   :'☒',
+                \ 'Clean'     :'✔︎',
+                \ 'Unknown'   :'?',
+                \ }
 
 
 " ===
