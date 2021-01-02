@@ -34,6 +34,7 @@ set ignorecase
 set smartcase
 set shortmess+=c
 set inccommand=split
+set t_Co=256
 
 let mapleader=" "
 
@@ -136,6 +137,8 @@ noremap - Nzz
 noremap = nzz
 
 
+" Git
+noremap <c-g> :tabe<CR>:-tabmove<CR>:term lazygit<CR>
 
 
 call plug#begin()
@@ -147,7 +150,7 @@ Plug 'jiangmiao/auto-pairs'
 
 
 " Editor 
-Plug 'lyokha/vim-xkbswitch'
+" Plug 'lyokha/vim-xkbswitch'
 
 " color scheme
 " Plug 'dracula/vim', { 'as': 'dracula' }
@@ -205,12 +208,22 @@ call plug#end()
 colorscheme codedark
 let g:airline_theme = 'codedark'
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = '▶'
-let g:airline_left_sep = '▶'
-let g:airline_left_alt_sep = '❯'
-let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_powerline_fonts = 1  " 支持 powerline 字体
+" let g:airline#extensions#tabline#left_sep = '▶'
+" let g:airline_left_sep = '▶'
+" let g:airline_left_alt_sep = '❯'
+" let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#branch#enabled=1
 
+if !exists('g:airline_symbols')
+let g:airline_symbols = {}
+endif
+let g:airline_left_sep = '▶'
+let g:airline_left_alt_sep = '❯'
+let g:airline_right_sep = '◀'
+let g:airline_right_alt_sep = '❮'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
 
 let g:XkbSwitchEnabled = 1
 
@@ -336,3 +349,29 @@ let g:vista#renderer#icons = {
 " === Ctrlp
 " ===
 let g:ctrlp_map = '<c-p>'
+
+
+
+" ===
+" === Auto switch to English in Normal Mode
+" ===
+let g:input_toggle = 0
+function! Fcitx2en()
+   let s:input_status = system("fcitx-remote")
+   if s:input_status == 2
+      let g:input_toggle = 1
+      let l:a = system("fcitx-remote -c")
+   endif
+endfunction
+
+function! Fcitx2zh()
+   let s:input_status = system("fcitx-remote")
+   if s:input_status != 2 && g:input_toggle == 1
+      let l:a = system("fcitx-remote -o")
+      let g:input_toggle = 0
+   endif
+endfunction
+
+set timeoutlen=150
+autocmd InsertLeave * call Fcitx2en()
+autocmd InsertEnter * call Fcitx2zh()
