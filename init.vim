@@ -218,9 +218,11 @@ let g:airline#extensions#branch#enabled=1
 if !exists('g:airline_symbols')
 let g:airline_symbols = {}
 endif
-let g:airline_left_sep = '▶'
+" let g:airline_left_sep = '▶'
+let g:airline_left_sep = ''
 let g:airline_left_alt_sep = '❯'
-let g:airline_right_sep = '◀'
+" let g:airline_right_sep = '◀'
+let g:airline_right_sep = ''
 let g:airline_right_alt_sep = '❮'
 let g:airline_symbols.linenr = '¶'
 let g:airline_symbols.branch = '⎇'
@@ -375,3 +377,11 @@ endfunction
 set timeoutlen=150
 autocmd InsertLeave * call Fcitx2en()
 autocmd InsertEnter * call Fcitx2zh()
+
+" ===
+" === Auto switch to Coc disable when easymotion chagnes buffer content
+" === without this, may have diagnostic wrong info.
+" ===
+autocmd User EasyMotionPromptBegin silent! CocDisable
+autocmd User EasyMotionPromptEnd silent! CocEnable
+
