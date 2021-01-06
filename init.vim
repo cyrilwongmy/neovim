@@ -136,7 +136,48 @@ autocmd BufRead,BufNewFile *.md setlocal spell
 noremap - Nzz
 noremap = nzz
 
+" Stop annoying sudo
+cmap w!! w !sudo tee %
 
+" Compile function
+noremap R :call CompileRunnGcc()<CR>
+func! CompileRunnGcc()
+	exec "w"
+	if &filetype == 'c'
+		exec "!g++ % -o %<"
+		exec "!time ./%<"
+	elseif &filetype == 'cpp'
+		set splitbelow
+		exec "!g++ -std=c++11 % -Wall -o %<"
+		:sp
+		:res -15
+		:term ./%<
+	elseif &filetype == 'java'
+		exec "!javac %"
+		exec "!time java %<"
+	elseif &filetype == 'sh'
+		:!time bash %
+	elseif &filetype == 'python'
+		set splitbelow
+		:sp
+		:term python3 %
+	elseif &filetype == 'html'
+		silent! exec "!".g:mkdp_browser." % &"
+	elseif &filetype == 'markdown'
+		exec "InstantMarkdownPreview"
+	elseif &filetype == 'tex'
+		silent! exec "VimtexStop"
+		silent! exec "VimtexCompile"
+	elseif &filetype == 'javascript'
+		set splitbelow
+		:sp
+		:term export DEBUG="INFO,ERROR,WARNING"; node--trace-warning .
+	elseif &filetype == 'go'
+		set splitbelow
+		:sp
+		:term go run .
+	endif
+endfunc
 " Git
 noremap <c-g> :tabe<CR>:-tabmove<CR>:term lazygit<CR>
 
@@ -145,12 +186,16 @@ call plug#begin()
 
 Plug 'mhinz/vim-startify'
 
+" Visual enhancement
 Plug 'yggdroot/indentline'
-Plug 'jiangmiao/auto-pairs'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'luochen1990/rainbow'
+
 
 
 " Editor 
 " Plug 'lyokha/vim-xkbswitch'
+Plug 'jiangmiao/auto-pairs'
 
 " color scheme
 " Plug 'dracula/vim', { 'as': 'dracula' }
@@ -293,7 +338,8 @@ set updatetime=100
 let g:coc_global_extensions = [
 	\ 'coc-clangd',
 	\ 'coc-vimlsp',
-	\ 'coc-snippets']
+	\ 'coc-snippets',
+	\ 'coc-java',]
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -314,6 +360,9 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+nmap <leader>ac <Plug>(coc-codeaction)
+nmap <leader>qf <Plug>(coc-fix-current)
 
 nnoremap <silent> <LEADER>h :call <SID>show_documentation()<CR>
 function! s:show_documentation()
@@ -387,3 +436,11 @@ autocmd InsertEnter * call Fcitx2zh()
 autocmd User EasyMotionPromptBegin silent! CocDisable
 autocmd User EasyMotionPromptEnd silent! CocEnable
 
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+	 ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+	 highlight = {
+		 enable = true, -- false will disable the whole extension
+   },
+}
+EOF

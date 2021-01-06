@@ -40,7 +40,13 @@
   "diagnostic.checkCurrentLine": true,
   "diagnostic.virtualTextPrefix": " ❯❯❯ ",
   "diagnostic.virtualText": true,
+
+	// codelens
   "codeLens.enable": true,
+	"java.referencesCodeLens.enabled": true,
+	"java.implementationsCodeLens.enabled": true,
+	"java.completion.enabled": true,
+
   "coc.preferences.formatOnSaveFiletypes": [
     "javascript",
     "typescript",
@@ -50,6 +56,7 @@
     "python",
     "vue",
     "svelte",
+	 "java",
     "c"
   ]
 }
