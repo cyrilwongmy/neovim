@@ -72,7 +72,7 @@ noremap <LEADER><CR> :nohlsearch<CR>
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 
 " Enter normal mode in insert mode
-inoremap jj <ESC>`^
+" inoremap jj <ESC>`^
 
 " window management
 noremap <LEADER>w <C-w>w
@@ -242,6 +242,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 
 call plug#end()
+
+let g:rainbow_active = 1
 
 " Theme 
 " Ayu
